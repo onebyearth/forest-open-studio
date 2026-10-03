@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>森林開放畫室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --ground: #edf1ec;
+    --surface: #f8faf6;
+    --ink: #1e2b27;
+    --ink-soft: #4a5b54;
+    --line: #c9d4c9;
+    --moss: #46664f;
+    --water: #2a7778;
+    --on-water: #ffffff;
+    --slip: #fbf6e6;
+    --slip-ink: #2d302a;
+    --slip-line: #e3d9b8;
+    --tag-park: #7a5f12;
+    --tag-forest: #2f6a3f;
+    --hero-scrim: rgba(18, 30, 25, 0.72);
+    --shadow: 0 1px 2px rgba(30, 43, 39, 0.10), 0 8px 20px -10px rgba(30, 43, 39, 0.25);
+    --display: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "KaiTi", serif;
+    --body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #131b18;
+      --surface: #1a2420;
+      --ink: #e5eee8;
+      --ink-soft: #a6b8ae;
+      --line: #2e3c36;
+      --moss: #8fb798;
+      --water: #6fc2c0;
+      --on-water: #0e1a18;
+      --slip: #2a2d27;
+      --slip-ink: #ece6d0;
+      --slip-line: #3d3f35;
+      --tag-park: #e0c46a;
+      --tag-forest: #8fcf9f;
+      --hero-scrim: rgba(8, 14, 12, 0.78);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 20px -10px rgba(0, 0, 0, 0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #131b18;
+    --surface: #1a2420;
+    --ink: #e5eee8;
+    --ink-soft: #a6b8ae;
+    --line: #2e3c36;
+    --moss: #8fb798;
+    --water: #6fc2c0;
+    --on-water: #0e1a18;
+    --slip: #2a2d27;
+    --slip-ink: #ece6d0;
+    --slip-line: #3d3f35;
+    --tag-park: #e0c46a;
+    --tag-forest: #8fcf9f;
+    --hero-scrim: rgba(8, 14, 12, 0.78);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 20px -10px rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--water); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { max-width: 1080px; margin-inline: auto; padding-inline: 16px; }
+  .narrow { max-width: 680px; }
+  section { padding-block: 72px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.35; margin: 0; text-wrap: balance; }
+  h2 { font-size: clamp(1.7rem, 4.6vw, 2.35rem); }
+  h3 { font-size: 1.2rem; }
+  p { margin: 0; }
+  .eyebrow { font-size: 0.8rem; letter-spacing: 0.18em; color: var(--moss); font-weight: 500; margin-bottom: 14px; }
+  .lead { font-size: 1.08rem; color: var(--ink-soft); }
+  .stack > * + * { margin-top: 1.1em; }
+
+  /* buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 10px 26px; border-radius: 999px;
+    font: 500 1rem/1 var(--body); text-decoration: none; cursor: pointer;
+    border: 1.5px solid transparent; transition: transform .15s ease, background-color .15s ease;
+  }
+  .btn-primary { background: var(--water); color: var(--on-water); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost { border-color: currentColor; color: inherit; }
+  .btn[aria-disabled="true"] { opacity: .6; cursor: default; pointer-events: none; }
+
+  /* nav */
+  .nav {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 58px; }
+  .brand { font-family: var(--display); font-weight: 700; font-size: 1.1rem; text-decoration: none; letter-spacing: .04em; }
+  .nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font-size: .92rem; }
+  .nav ul a { text-decoration: none; color: var(--ink-soft); }
+  .nav ul a:hover { color: var(--ink); }
+  .nav .btn { min-height: 38px; padding: 6px 18px; font-size: .9rem; }
+  @media (max-width: 760px) { .nav ul { display: none; } }
+
+  /* hero */
+  .hero {
+    position: relative; isolation: isolate; color: #fff;
+    min-height: clamp(460px, 62vw, 640px);
+    display: flex; align-items: flex-end;
+    background: #2b3a30 url("images/hero.jpg") center center / cover no-repeat;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(100deg, var(--hero-scrim) 0%, rgba(18, 30, 25, 0.25) 62%, rgba(18, 30, 25, 0) 100%);
+  }
+  @media (max-width: 640px) {
+    .hero::before { background: linear-gradient(180deg, var(--hero-scrim) 0%, rgba(18, 30, 25, 0.3) 75%, rgba(18, 30, 25, 0.1) 100%); }
+    .hero { align-items: flex-start; }
+  }
+  .hero .wrap { padding-block: 64px 56px; width: 100%; }
+  .hero .eyebrow { color: #d5e6d3; }
+  .hero h1 { font-size: clamp(2.6rem, 9vw, 4.6rem); letter-spacing: .06em; font-weight: 700; }
+  .hero .sub { font-family: var(--display); font-size: clamp(1.15rem, 3.2vw, 1.5rem); margin-top: 10px; }
+  .hero .desc { max-width: 30em; margin-top: 18px; color: #eef4ec; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .hero .btn-primary { background: #eaf4ea; color: #1b2d26; }
+  .hero .btn-ghost { color: #fff; }
+
+  /* facts */
+  .facts { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .facts dl { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin: 0; padding-block: 8px; }
+  .facts div { padding: 18px 16px; border-left: 1px solid var(--line); }
+  .facts div:first-child { border-left: 0; padding-left: 0; }
+  .facts dt { font-size: .75rem; letter-spacing: .16em; color: var(--moss); font-weight: 500; }
+  .facts dd { margin: 4px 0 0; font-size: .95rem; line-height: 1.6; }
+  @media (max-width: 900px) {
+    .facts dl { grid-template-columns: repeat(2, 1fr); }
+    .facts div { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+    .facts div:nth-child(-n+2) { border-top: 0; }
+    .facts div:nth-child(5) { grid-column: 1 / -1; }
+  }
+
+  /* what is */
+  .split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 32px; } }
+  .compare { width: 100%; border-collapse: collapse; margin-top: 28px; font-size: .97rem; }
+  .compare th { text-align: left; font-family: var(--display); font-size: 1.05rem; padding: 0 0 10px; }
+  .compare th:first-child { color: var(--water); }
+  .compare th:last-child { color: var(--ink-soft); }
+  .compare td { padding: 12px 16px 12px 0; border-top: 1px solid var(--line); vertical-align: top; }
+  .compare td:last-child { color: var(--ink-soft); }
+  figure { margin: 0; }
+  figcaption { font-size: .85rem; color: var(--ink-soft); margin-top: 10px; }
+  .photo { border-radius: 4px; width: 100%; object-fit: cover; }
+
+  /* flow */
+  .flow-band { background: var(--surface); border-block: 1px solid var(--line); }
+  .timeline { list-style: none; margin: 32px 0 0; padding: 0; }
+  .timeline li { display: grid; grid-template-columns: 104px 1fr; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+  .timeline li:last-child { border-bottom: 1px solid var(--line); }
+  .timeline time { font-variant-numeric: tabular-nums; font-weight: 500; color: var(--water); }
+  .timeline .long { background: linear-gradient(90deg, color-mix(in srgb, var(--water) 12%, transparent), transparent 70%); }
+  .timeline h3 { font-size: 1.08rem; margin-bottom: 2px; }
+  .timeline p { color: var(--ink-soft); font-size: .95rem; }
+  .flow-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: start; }
+  @media (max-width: 900px) { .flow-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+  /* slips: the recurring "small letter" object */
+  .slip {
+    background: var(--slip); color: var(--slip-ink);
+    border: 1px solid var(--slip-line); border-radius: 3px;
+    padding: 22px 22px 24px; box-shadow: var(--shadow);
+  }
+  .slip .tag { font-size: .72rem; letter-spacing: .16em; font-weight: 500; }
+  .slip h3 { margin: 6px 0 6px; }
+  .slip p { font-size: .93rem; line-height: 1.75; opacity: .85; }
+  .letter { font-family: var(--display); font-size: 1.12rem; line-height: 2; padding: 30px 30px 34px; transform: rotate(-1deg); }
+  .letter p + p { margin-top: .9em; }
+  .letter .from { font-size: .85rem; margin-top: 1.4em; opacity: .7; text-align: right; }
+  .letter-note { font-size: .85rem; color: var(--ink-soft); margin-top: 18px; }
+
+  .slips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+  @media (max-width: 960px) { .slips { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .slips { grid-template-columns: 1fr; } }
+  .slips .slip:nth-child(odd) { transform: rotate(-.8deg); }
+  .slips .slip:nth-child(even) { transform: rotate(.7deg); }
+  @media (max-width: 520px) { .slips .slip { transform: none !important; } }
+  .tag-park { color: var(--tag-park); }
+  .tag-forest { color: var(--tag-forest); }
+  .season-note { margin-top: 26px; font-size: .92rem; color: var(--ink-soft); max-width: 40em; }
+
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 48px; }
+  @media (max-width: 720px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  .gallery img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; border-radius: 3px; }
+  .gallery figcaption { margin-top: 6px; }
+
+  /* why */
+  .why { display: grid; grid-template-columns: 5fr 6fr; gap: 56px; align-items: center; }
+  @media (max-width: 860px) { .why { grid-template-columns: 1fr; gap: 32px; } }
+  .why img { aspect-ratio: 3 / 4; object-fit: cover; max-height: 560px; }
+  .pull { font-family: var(--display); font-size: 1.3rem; line-height: 1.7; color: var(--water); }
+
+  /* leader */
+  .leader-band { background: var(--surface); border-block: 1px solid var(--line); }
+  .leader { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start; }
+  @media (max-width: 860px) { .leader { grid-template-columns: 1fr; gap: 32px; } }
+  .creds { list-style: none; margin: 26px 0 0; padding: 0; }
+  .creds li { padding: 12px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr; }
+  .creds li:last-child { border-bottom: 1px solid var(--line); }
+  .creds strong { font-weight: 500; }
+  .creds span { font-size: .88rem; color: var(--ink-soft); }
+  .caution { margin-top: 24px; font-size: .88rem; color: var(--ink-soft); }
+
+  /* fit */
+  .fit { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 36px; }
+  @media (max-width: 720px) { .fit { grid-template-columns: 1fr; } }
+  .fit ul { list-style: none; margin: 14px 0 0; padding: 0; }
+  .fit li { padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink-soft); }
+  .fit h3 { color: var(--water); }
+  .fit .no h3 { color: var(--ink-soft); }
+
+  /* places */
+  .places { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 36px; }
+  @media (max-width: 720px) { .places { grid-template-columns: 1fr; } }
+  .place img { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; border-radius: 3px; }
+  .place h3 { margin-top: 16px; }
+  .place p { color: var(--ink-soft); margin-top: 6px; font-size: .95rem; }
+  .notice { margin-top: 32px; padding: 18px 22px; border: 1px dashed var(--moss); border-radius: 4px; color: var(--ink-soft); font-size: .95rem; }
+
+  /* price */
+  .prices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
+  @media (max-width: 900px) { .prices { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .prices { grid-template-columns: 1fr; } }
+  .price { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
+  .price.main { border-color: var(--water); box-shadow: var(--shadow); }
+  .price .label { font-size: .85rem; color: var(--ink-soft); }
+  .price .amount { font-family: var(--display); font-size: 2.3rem; font-weight: 700; line-height: 1.2; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .price .amount small { font-size: .9rem; font-weight: 400; color: var(--ink-soft); margin-left: 4px; }
+  .price .note { font-size: .88rem; color: var(--ink-soft); margin-top: 6px; }
+  .includes { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px 28px; color: var(--ink-soft); font-size: .95rem; }
+  .register-box { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+  .register-box p { color: var(--ink-soft); font-size: .92rem; max-width: 26em; }
+
+  /* faq */
+  details { border-top: 1px solid var(--line); }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; list-style: none; padding: 18px 40px 18px 0; position: relative; font-weight: 500; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font-size: 1.5rem; font-weight: 300; color: var(--water); }
+  details[open] summary::after { content: "–"; }
+  details p { padding: 0 0 20px; color: var(--ink-soft); max-width: 38em; }
+  .faq { margin-top: 32px; }
+
+  /* closing */
+  .closing { background: var(--surface); border-top: 1px solid var(--line); text-align: center; }
+  .closing img { width: min(420px, 100%); margin: 0 auto 28px; border-radius: 3px; }
+  .closing .quote { font-family: var(--display); font-size: clamp(1.3rem, 4vw, 1.75rem); line-height: 1.8; margin-bottom: 30px; text-wrap: balance; }
+  footer { padding-block: 40px 56px; font-size: .85rem; color: var(--ink-soft); }
+  footer p + p { margin-top: 8px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+</style>
+
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">森林開放畫室</a>
+    <ul>
+      <li><a href="#what">這是什麼</a></li>
+      <li><a href="#flow">怎麼進行</a></li>
+      <li><a href="#season">森林的邀請</a></li>
+      <li><a href="#leader">帶領者</a></li>
+      <li><a href="#register">價格</a></li>
+      <li><a href="#faq">常見問題</a></li>
+    </ul>
+    <a class="btn btn-primary" href="https://forms.gle/St8XSxez8qEq5Kru8" target="_blank" rel="noopener">我想報名</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- 首屏 -->
+  <div class="hero">
+    <div class="wrap">
+      <p class="eyebrow">北投 ・ 第一季試辦</p>
+      <h1>森林開放畫室</h1>
+      <p class="sub">在北投的公園與森林裡，開了一間行動畫室。</p>
+      <p class="desc">畫紙、畫布、顏料與媒材，開啟和自然一起創造的心流時光。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://forms.gle/St8XSxez8qEq5Kru8" target="_blank" rel="noopener">我想報名</a>
+        <a class="btn btn-ghost" href="#flow">看看怎麼進行</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 一目了然的關鍵資訊 -->
+  <div class="facts">
+    <div class="wrap">
+      <dl>
+        <div><dt>地點</dt><dd>週五：北投公園<br>週日：天母公園、貴子坑、大屯瀑布</dd></div>
+        <div><dt>時間</dt><dd>週五下午 3:30–5:30<br>10/9、10/23<br>週日上午 9:30–11:30<br>10/11、10/18、10/25</dd></div>
+        <div><dt>人數</dt><dd>4–8 人</dd></div>
+        <div><dt>費用</dt><dd>現場 500<br>網路報名優惠 400</dd></div>
+        <div><dt>畫具</dt><dd>現場提供，也歡迎帶自己最愛用的</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 什麼是開放畫室 -->
+  <section id="what">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">什麼是開放畫室</p>
+        <h2>一間沒有牆面的畫室</h2>
+        <div class="stack" style="margin-top:22px">
+          <p>一般的畫畫課，老師示範，大家照著畫，最後交出一幅作品。</p>
+          <p>開放畫室是一個開放的空間，人們<strong>自在前來、自在創作、自在分享</strong>。</p>
+          <p>「森林開放畫室」將帶著畫具小車前往森林，讓參與者自由選擇媒材。你會收到一封小小的自然邀請函，如何創作由你決定。</p>
+          <p>在森林裡，畫畫、捏陶、走走、發呆，都是創作的過程。</p>
+          <p>自然裡觀照世界，畫布上探索內心。</p>
+        </div>
+      </div>
+      <figure>
+        <img class="photo" src="images/painting.jpg" alt="戶外調色盤上擠出的顏料，四周散落著秋天的落葉，一旁放著畫筆" width="3089" height="2048">
+        <figcaption>戶外調色，顏料與落葉放在一起。（Photo by Sydney Moore / Unsplash）</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 日期與地點 -->
+  <section id="place">
+    <div class="wrap">
+      <p class="eyebrow">畫室預定開放日</p>
+      <h2>在公園與森林之間</h2>
+      <div class="places">
+        <div class="place">
+          <img src="images/lake-tree.jpg" alt="湖邊一棵枝葉茂密的大樹" width="1824" height="1368" loading="lazy">
+          <h3>北投公園（週五 15:30–17:30）</h3>
+          <p>搭捷運走路就到，活動前通知定點位置。</p>
+        </div>
+        <div class="place">
+          <img src="images/forest.jpg" alt="一個人攀爬在森林的樹枝上，光從樹葉間灑落" width="1333" height="1000" loading="lazy">
+          <h3>天母公園／貴子坑／大屯瀑布（週日 9:30–11:30）</h3>
+          <p>依次地點不同，活動前通知定點位置。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 一次畫室怎麼進行 -->
+  <div class="flow-band">
+    <section id="flow">
+      <div class="wrap">
+        <div>
+          <h2>森林開放畫室的兩個小時</h2>
+          <p class="lead" style="margin-top:16px">挑選畫具－安定自己－自在時光－茶席談畫－感謝森林</p>
+          <ol class="timeline">
+            <li><time>0:00–0:10</time><div><h3>抵達定點位置</h3><p>挑選畫具，領取當日的自然邀請函，設定提醒時間。</p></div></li>
+            <li><time>0:10–0:20</time><div><h3>森林漫步</h3><p>拿著畫具和邀請函，找一個今天想待著的地方。</p></div></li>
+            <li class="long"><time>0:20–1:20</time><div><h3>自在創作</h3><p>創作時間約 1 小時。畫 5 分鐘就躺下來也可以，看著畫布上的光影發呆到最後也可以。</p></div></li>
+            <li><time>1:20–1:30</time><div><h3>回到定點</h3><p>收拾畫具，喝一杯茶。</p></div></li>
+            <li><time>1:30–1:55</time><div><h3>分享圈</h3><p>用心聆聽、自在分享。聊聊今天的你、今天的創作或今天的森林。</p></div></li>
+            <li><time>1:55–2:00</time><div><h3>謝謝森林</h3><p>一起唱一首歌，謝謝今天的相遇，讓自然回家。</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 第一季 -->
+  <section id="season">
+    <div class="wrap">
+      <h2>每一次，一個小小的邀請函</h2>
+      <p class="season-note" style="margin-top:16px">主題會跟著季節與當天的自然調整。光的角度、樹長出新葉與花朵，同樣的公園也有不同的變化。</p>
+
+      <div class="slips">
+        <article class="slip"><h3>落葉</h3><p>找一片已經落下來的東西，陪它坐一會兒。</p></article>
+        <article class="slip"><h3>泥土</h3><p>泥、土色、拓印，還有留下來的痕跡。</p></article>
+        <article class="slip"><h3>聞到什麼</h3><p>聞到什麼，就畫什麼。</p></article>
+        <article class="slip"><h3>溪水</h3><p>讓水也成為作品的一部分。</p></article>
+        <article class="slip"><h3>影子</h3><p>今天的光，把什麼畫在地上？</p></article>
+        <article class="slip"><h3>一棵樹</h3><p>不用畫得像，只是慢慢認識它。</p></article>
+        <article class="slip"><h3>風來了</h3><p>讓風決定一部分的作品。</p></article>
+        <article class="slip"><h3>聽見什麼</h3><p>聽見什麼，就畫什麼。</p></article>
+      </div>
+
+      <div class="gallery">
+        <figure><img src="images/leaf.jpg" alt="手拿著一片落葉，背景是長滿苔蘚的岩石" width="1536" height="2048" loading="lazy"><figcaption>落葉</figcaption></figure>
+        <figure><img src="images/shadow.jpg" alt="林間小路上，光影灑落在滿是落葉的地面" width="1824" height="1368" loading="lazy"><figcaption>影子</figcaption></figure>
+        <figure><img src="images/light.jpg" alt="荷花池裡的蓮蓬，八個蜂窩狀的孔洞排成一圈" width="3504" height="2336" loading="lazy"><figcaption>水</figcaption></figure>
+        <figure><img src="images/flower.jpg" alt="逆光中盛開的紫色小花" width="1824" height="1368" loading="lazy"><figcaption>花</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 為什麼要做 -->
+  <div class="flow-band">
+    <section id="why">
+      <div class="wrap why">
+        <img class="photo" src="images/moss-hand.jpg" alt="草地上的粉蠟筆樹枝畫，旁邊放著一根真實的松葉" width="1440" height="1085" loading="lazy">
+        <div>
+          <p class="eyebrow">為什麼做森林開放畫室</p>
+          <h2>把畫畫和森林，放在一起</h2>
+          <p class="pull" style="margin-top:12px">在空白的畫紙上，在我們的內心深處，有一片森林。</p>
+          <div class="stack" style="margin-top:22px">
+            <p>我們總以為畫畫要畫得像、畫得好，使畫畫變成一件令人恐懼的事情。</p>
+            <p>學會「用呼吸」畫畫以後，我開始去感受身體、感受顏色與畫筆、感受內心，然後讓顏色與線條浮出來。</p>
+            <p>呼吸－感受－畫，停－呼吸－感受－畫…</p>
+            <p>原來畫畫可以不用先想好要畫什麼，甚至可以不知道自己在畫什麼。更奇怪的是，畫著、感受著、畫著，你忽然會知道：「原來我是這樣」。</p>
+            <p>因為在看似空白的紙上，一直存在著一片森林。而那片森林，不僅來自環繞我們的自然，也來自我們的內心深處。</p>
+            <p>——拿起畫筆吧，</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 關於小一 -->
+  <section id="leader">
+    <div class="wrap leader">
+      <figure>
+        <img class="photo" src="images/leader.jpg" alt="小一躺在森林棧道上，雙手向天空伸展" width="1000" height="1500" loading="lazy">
+      </figure>
+      <div>
+        <p class="eyebrow">帶領者</p>
+        <h2>小一</h2>
+        <p class="lead" style="margin-top:14px">森林療癒師，也是一直在畫畫的人。</p>
+        <ul class="creds">
+          <li><strong>林業及自然保育署　森林療癒師</strong></li>
+          <li><strong>正念存在藝術治療師／表創性藝術治療師</strong><span>已修畢／三年期課程第二年</span></li>
+          <li><strong>台大森林療癒碩士</strong><span>以質性研究探討森林體驗</span></li>
+          <li><strong>作家與說書人</strong><span>《瑪那》（果力，2024）、《我們的自然故事》（2018）；經營粉專「大自然的邀請函」10 年</span></li>
+        </ul>
+        <p class="caution">森林開放畫室是小一個人主辦的創作與陪伴空間，不是心理治療或諮商。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 適合誰 -->
+  <div class="flow-band">
+    <section id="fit">
+      <div class="wrap">
+        <p class="eyebrow">適合誰</p>
+        <h2>你不需要準備任何事</h2>
+        <div class="fit">
+          <div class="yes">
+            <h3>很適合你，如果</h3>
+            <ul>
+              <li>想在自然裡創作，而不是在教室裡</li>
+              <li>覺得自己「不會畫畫」，但有點想試試看</li>
+              <li>生活排得很滿，很久沒有一段只留給自己的時間</li>
+              <li>想在自然裡慢下來，身邊有人陪，但不一定要說話</li>
+            </ul>
+          </div>
+          <div class="no">
+            <h3>可能不太適合，如果</h3>
+            <ul>
+              <li>想學習繪畫技巧、需要老師示範步驟</li>
+              <li>需要心理治療或諮商</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 費用與報名 -->
+  <div class="flow-band">
+    <section id="register">
+      <div class="wrap">
+        <p class="eyebrow">費用與報名</p>
+        <h2>第一季試辦價</h2>
+        <p class="lead narrow" style="margin-top:16px">可以只來一次，也可以中途加入，不需要一次報名全季。</p>
+        <div class="prices">
+          <div class="price">
+            <p class="label">現場報名</p>
+            <p class="amount">500<small>元</small></p>
+            <p class="note">單次 2 小時</p>
+          </div>
+          <div class="price main">
+            <p class="label">網路報名優惠</p>
+            <p class="amount">400<small>元</small></p>
+            <p class="note">單次 2 小時</p>
+          </div>
+          <div class="price" style="opacity:.55">
+            <p class="label">活動推廣期優惠</p>
+            <p class="amount" style="text-decoration:line-through">350<small>元</small></p>
+            <p class="note">已停止</p>
+          </div>
+          <div class="price">
+            <p class="label">親子（一大一小，4–12 歲）</p>
+            <p class="amount">600<small>元</small></p>
+            <p class="note">原價 800 元</p>
+          </div>
+        </div>
+        <p class="includes"><span>包含：畫具與茶水</span><span>也歡迎帶自己最愛用的畫具</span><span>每場滿 4 人開課</span></p>
+        <div class="register-box">
+          <a class="btn btn-primary" href="https://forms.gle/St8XSxez8qEq5Kru8" target="_blank" rel="noopener">我想報名</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 常見問題 -->
+  <section id="faq">
+    <div class="wrap narrow" style="margin-inline:auto">
+      <p class="eyebrow">行前須知</p>
+      <h2>常見問題</h2>
+      <div class="faq">
+        <details><summary>我不會畫畫，可以參加嗎？</summary><p>可以。這裡沒有畫得好不好，只有你今天怎麼跟自然相遇。</p></details>
+        <details><summary>一定要畫嗎？</summary><p>不用。你可以畫、可以走走、看螞蟻、躺著，也可以整堂什麼都沒畫。</p></details>
+        <details><summary>這是療癒課程或心理治療嗎？</summary><p>不是。這是創作與陪伴的空間。小一有森林療癒與藝術治療的訓練背景，會細心安排空間與節奏，但不做診斷，也不提供治療或諮商。</p></details>
+        <details><summary>分享圈一定要說很私人的事嗎？</summary><p>不用。分享是自願的，只說你想說的。只說「今天風很大」也可以。</p></details>
+        <details><summary>需要帶什麼？</summary><p>一瓶水、帽子，以及可以直接坐在地上的衣服。畫具現場都有，想用自己的也歡迎帶來。</p></details>
+        <details><summary>下雨怎麼辦？</summary><p>小雨原則照常，雨也許會成為畫室裡多出來的一位創作者。如果持續中雨、雷雨、強風，或有安全疑慮時，會改期（11/27、11/29）或取消。活動前一晚公告，前三小時做最後確認。</p></details>
+        <details><summary>可以帶孩子嗎？</summary><p>可以。請協助您的孩子珍惜使用畫具媒材，並自負孩子的安全責任。</p></details>
+        <details><summary>可以撿自然物來畫嗎？</summary><p>歡迎將落葉落花落果成為你創作的一部分，但我們不採摘活的植物，也不影響生態環境。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 收束 -->
+  <section class="closing">
+    <div class="wrap">
+      <img src="images/tree-drawing.jpg" alt="手拿著一幅畫著花草的小畫，旁邊放著一顆橡實" width="522" height="506" loading="lazy">
+      <p class="quote">不是來把畫畫好。<br>只是一起帶著畫布走進森林，<br>走進自然。</p>
+      <a class="btn btn-primary" href="https://forms.gle/St8XSxez8qEq5Kru8" target="_blank" rel="noopener">我想報名</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>森林開放畫室</strong>　帶領：小一</p>
+    <p>小一經營臉書粉專「大自然的邀請函」與 Medium「One by Earth」。</p>
+  </div>
+</footer>
+
+</body>
+</html>
